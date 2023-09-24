@@ -27,6 +27,9 @@
 #include "TinyGsmTime.tpp"
 #include "TinyGsmNTP.tpp"
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #define GSM_NL "\r\n"
 static const char GSM_OK[] TINY_GSM_PROGMEM    = "OK" GSM_NL;
 static const char GSM_ERROR[] TINY_GSM_PROGMEM = "ERROR" GSM_NL;
@@ -259,7 +262,8 @@ class TinyGsmSim800 : public TinyGsmModem<TinyGsmSim800>,
     waitResponse();
     if (!setPhoneFunctionality(0)) { return false; }
     if (!setPhoneFunctionality(1, true)) { return false; }
-    delay(3000);
+    //delay(3000);
+    vTaskDelay(3000/portTICK_PERIOD_MS);
     return init(pin);
   }
 
